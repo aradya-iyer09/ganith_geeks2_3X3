@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3x3 Magic Square Puzzle</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #e67e22;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            grid-template-rows: repeat(3, 70px);
+            gap: 15px;
+            margin: 20px 70px;
+        }
+        .grid input {
+            width: 70px;
+            height: 70px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            background-color: #fefbd8;
+            color: #333;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .grid input:focus {
+            background-color: #dff9fb;
+            border-color: #1e90ff;
+            outline: none;
+        }
+        .hint {
+            margin: 15px 20px;
+            font-weight: bold;
+            color: #555;
+            font-size: 1.2rem;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            background-color: #2ecc71;
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #27ae60;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>3x3 Magic Square Puzzle</h1>
+        <p>Fill in the missing numbers to complete the magic square.</p>
+        <p>Each row, column, and diagonal should add up to 15.</p>
+        <div class="hint">Hint: The magic sum for a 3x3 magic square is 15  </div>
+
+        <div class="grid">
+            <!-- Pre-filled numbers and input fields for the user -->
+            <input type="text" value="8" disabled style="background-color: #ffeb3b;">
+            <input type="text" value="" id="cell1" style="background-color: #fff;">
+            <input type="text" value="6" disabled style="background-color: #ffeb3b;">
+
+            <input type="text" value="" id="cell2" style="background-color: #fff;">
+            <input type="text" value="5" disabled style="background-color: #ffeb3b;">
+            <input type="text" value="" id="cell3" style="background-color: #fff;">
+
+            <input type="text" value="4" disabled style="background-color: #ffeb3b;">
+            <input type="text" value="" id="cell4" style="background-color: #fff;">
+            <input type="text" value="2" disabled style="background-color: #ffeb3b;">
+        </div>
+
+        <button onclick="checkSolution()">Check Solution</button>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <script>
+        function checkSolution() {
+            const cell1 = parseInt(document.getElementById("cell1").value) || 0;
+            const cell2 = parseInt(document.getElementById("cell2").value) || 0;
+            const cell3 = parseInt(document.getElementById("cell3").value) || 0;
+            const cell4 = parseInt(document.getElementById("cell4").value) || 0;
+
+            // Solution matrix
+            const matrix = [
+                [8, cell1, 6],
+                [cell2, 5, cell3],
+                [4, cell4, 2]
+            ];
+
+            const sum = 15;
+
+            // Check rows, columns, and diagonals
+            function checkArray(arr) {
+                return arr.reduce((a, b) => a + b) === sum;
+            }
+
+            const rowsValid = matrix.every(checkArray);
+            const colsValid = [0, 1, 2].every(i => checkArray(matrix.map(row => row[i])));
+            const diag1Valid = (matrix[0][0] + matrix[1][1] + matrix[2][2]) === sum;
+            const diag2Valid = (matrix[0][2] + matrix[1][1] + matrix[2][0]) === sum;
+
+            if (rowsValid && colsValid && diag1Valid && diag2Valid) {
+                document.getElementById("feedback").textContent = "Correct! You've completed the magic square!";
+                document.getElementById("feedback").style.color = "green";
+            } else {
+                document.getElementById("feedback").textContent = "Incorrect! Try again.";
+                document.getElementById("feedback").style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
